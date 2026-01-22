@@ -26,8 +26,19 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Initialize Firebase
-const credentialsPath = path.resolve(__dirname, process.env.FIREBASE_CREDENTIALS_PATH);
-const serviceAccount = JSON.parse(fs.readFileSync(credentialsPath, 'utf8'));
+const serviceAccount = {
+  type: "service_account",
+  project_id: "isp-dashboard-7cb6e",
+  private_key_id: "b401e3cd920ba58d57a3d2b9a33cf4f3f8502c2d",
+  private_key: "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCySSxgoAaHQg05\nnPtEzm7+smdZBFPOArQKotRKbfXnPoHimRAwuj+swj9kIy11x5p7n0som3+XCycW\nsMrFS4iXoeO7heUZ6LbmIbM2nNJPHUGSdJ5QL6UIfxvi+hVbWdlh72J8G2axlFse\nvZqqlI90bGRfDg9TZFJ3qvdqT6Y8zTpFsrAFun0coOV8KNAeSzNhjNWXlGdb3T1a\nreL26U7OiDAO/PNglL1HxKN/TvNDGHg7mkWQxDTpSvIYO1TbmoxaNMlDByhjn9W7\na5dhznJ9m4NzkN7IqxhjMnBnGXpbS8ZLW+ozfR+y0FGFwBsyYTm2znKdTwc/4vjJ\nsMChHNRtAgMBAAECggEAA+olZk29NvUVU0GGJuGdgEwshsDYkjpu95jRrnyxnI07\nztzrhRZh1YpCWBGJqv9h/frmbJLVf1yIVDA3k5NwAVxVosVy3VnFwlHVHIre90u+\nJ9gVrc8OAZzA4P/6vhG/+y2FbRIw9A883PTu03YFnFnQ7mFhpsQaJ3SCkDwFe2pA\nzYueUYvwn38Uw5uz0vVVqoDAcJOuemLaY3ltAZetlJBmD5qXG5CnW0MKXmSj8FgF\nbNd5y5qP8ZIhCl6BcKEDIrvreg+M/W9MLhYCpAI623Qg3e0299u11pQHQ5BSHMMP\nrmwxurfYcQlT6LHbPaa4jylw6P7+g1ZBy8oqPi/F4QKBgQDb4mET5x5YTL5cjci6\niZjZJhICmuGAbPeE7SARV9rhb3JG7jC3sidQMxDZiUmHIDZN37+fwbC8QhRD4oLG\ni72lyr5yVWUdnTlmbdk/xC5RpYhb/uoTMCSErNFmFWmn8pK5F9e1SbNA2f7KFKeO\nXK3KgPmVFDhfXxlXLj8l3C41RQKBgQDPka0TSLoAQ8BU3ICQNxelKF652DUdtvo4\nGlRFboujlpgzfYviWOY8LErkka7nPy1H6jFZpymckMj8Cr/iQef47esBXHXp3adv\n8kY/xgg5c2Kedjz2dQCr2wzryulXduyQaAT67thuFBnER6/HGJk+14szj92jBA2Q\n4Exq2evxCQKBgF+kFgmsK7zIlLx5R2gr1XoOXyMW7yMHQppk8d/ZUPFhollL3ZDp\nQsRVkeytFHhcAILa4eTBQPiB3YKxkaR+v9zPVQsyLas16fOtsCNWV7dXwvoQ5Qu3\nkwrKiMJYaf6NOlicEE1gY0HAEF0hosf/c/BzLRw1EVgaa1FKYlk7bjXpAoGAOCXv\n64eAyRGKtWnwXRKKEuMYvKz/sUoN5Z85rI56t4XFJiiP7mqd3SkeGTZPWb59QTbY\noqfVWcTQmV1PCqVJWs0BBR09yEVtRZsD5bxr/R55TuQtGX4M8HAQzrfU5xQEagu5\nTSfO4/gMAExkADdnPNiRjyEbkz1Fbis+gKjyagECgYEAjCyS0u9x8VHegEx4kLp/\nePkNnbRto9XFUqn/p37FfR5lWPIEPE8qiA6XKR72xqiu9G4mINlOkTDH6gEwKJHl\nwbpvpSySod8vIKbH3QO/ihnRzs82SxyykxpVqCDv+IJnEUleKGfoL9df7Lapnt0y\nmqMgZq1dD5Q0nZiCEtlner0=\n-----END PRIVATE KEY-----\n",
+  client_email: "firebase-adminsdk-fbsvc@isp-dashboard-7cb6e.iam.gserviceaccount.com",
+  client_id: "101642885522234108344",
+  auth_uri: "https://accounts.google.com/o/oauth2/auth",
+  token_uri: "https://oauth2.googleapis.com/token",
+  auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
+  client_x509_cert_url: "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40isp-dashboard-7cb6e.iam.gserviceaccount.com",
+  universe_domain: "googleapis.com"
+};
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
