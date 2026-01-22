@@ -8,6 +8,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import expressLayouts from 'express-ejs-layouts';
+import ejs from 'ejs';
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 app.use(expressLayouts);
+app.engine('ejs', ejs.renderFile);
 app.set('view engine', 'ejs');
 app.set('layout', 'layout');
 app.set('views', path.join(process.cwd(), 'views'));
