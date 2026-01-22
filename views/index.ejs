@@ -279,169 +279,106 @@
     </div>
 </div>
 
+<!-- Hidden data for charts -->
+<div id="analytics-data" data-chart-labels='<%- JSON.stringify(locals.chartLabels || []) %>'
+    data-chart-values='<%- JSON.stringify(locals.chartValues || []) %>'
+    data-monthly-labels='<%- JSON.stringify(locals.monthlyLabels || []) %>'
+    data-monthly-values='<%- JSON.stringify(locals.monthlyValues || []) %>' style="display: none;"></div>
+
 <script>
-    console.log('Analytics Chart Data:', {
-        chartLabels: <% - JSON.stringify(locals.chartLabels || []) %>,
-        chartValues: <% - JSON.stringify(locals.chartValues || []) %>
-    });
     document.addEventListener('DOMContentLoaded', function () {
-        const isDarkMode = document.documentElement.classList.contains('dark');
-        const gridColor = isDarkMode ? 'rgba(75, 85, 99, 0.2)' : 'rgba(229, 231, 235, 0.8)';
-        const textColor = isDarkMode ? 'rgba(156, 163, 175, 1)' : 'rgba(107, 114, 128, 1)';
+        const dataEl = document.getElementById('analytics-data');
+        if (!dataEl) return;
 
-        // Daily Usage Chart
-        const ctx = document.getElementById('usageChart').getContext('2d');
-        const labels = <% - JSON.stringify(chartLabels) %>;
-        const data = <% - JSON.stringify(chartValues) %>;
+        try {
+            const chartLabels = JSON.parse(dataEl.dataset.chartLabels);
+            const chartValues = JSON.parse(dataEl.dataset.chartValues);
+            const monthlyLabels = JSON.parse(dataEl.dataset.monthlyLabels);
+            const monthlyValues = JSON.parse(dataEl.dataset.monthlyValues);
 
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Daily Searches',
-                    data: data,
-                    backgroundColor: 'rgba(59, 130, 246, 0.8)',
-                    borderColor: 'rgb(59, 130, 246)',
-                    borderWidth: 0,
-                    borderRadius: 6,
-                    barPercentage: 0.7
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
+            console.log('Daily Usage Data:', { labels: chartLabels, values: chartValues });
+
+            const gridColor = 'rgba(229, 231, 235, 0.8)';
+            const textColor = 'rgba(107, 114, 128, 1)';
+
+            // Daily Usage Chart
+            const usageCanvas = document.getElementById('usageChart');
+            if (usageCanvas && chartLabels.length > 0) {
+                new Chart(usageCanvas.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: chartLabels,
+                        datasets: [{
+                            label: 'Daily Searches',
+                            data: chartValues,
+                            backgroundColor: 'rgba(59, 130, 246, 0.8)',
+                            borderColor: 'rgb(59, 130, 246)',
+                            borderWidth: 0,
+                            borderRadius: 6,
+                            barPercentage: 0.7
+                        }]
                     },
-                    tooltip: {
-                        mode: 'index',
-                        intersect: false,
-                        backgroundColor: 'rgba(17, 24, 39, 0.95)',
-                        padding: 12,
-                        cornerRadius: 8,
-                        titleColor: '#fff',
-                        bodyColor: '#fff',
-                        borderColor: 'rgba(59, 130, 246, 0.5)',
-                        borderWidth: 1
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            stepSize: 1,
-                            color: textColor,
-                            font: {
-                                size: 11
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: 'rgba(17, 24, 39, 0.95)',
+                                titleColor: '#fff',
+                                bodyColor: '#fff'
                             }
                         },
-                        grid: {
-                            color: gridColor,
-                            drawBorder: false
-                        },
-                        border: {
-                            display: false
-                        }
-                    },
-                    x: {
-                        ticks: {
-                            color: textColor,
-                            font: {
-                                size: 10
-                            },
-                            maxRotation: 45,
-                            minRotation: 45
-                        },
-                        grid: {
-                            display: false
-                        },
-                        border: {
-                            display: false
+                        scales: {
+                            y: { beginAtZero: true, ticks: { color: textColor, stepSize: 1 }, grid: { color: gridColor } },
+                            x: { ticks: { color: textColor }, grid: { display: false } }
                         }
                     }
-                }
+                });
             }
-        });
 
-        // Monthly Trends Chart
-        const monthlyCtx = document.getElementById('monthlyChart').getContext('2d');
-        const monthlyLabels = <% - JSON.stringify(monthlyLabels) %>;
-        const monthlyData = <% - JSON.stringify(monthlyValues) %>;
-
-        new Chart(monthlyCtx, {
-            type: 'line',
-            data: {
-                labels: monthlyLabels,
-                datasets: [{
-                    label: 'Monthly Searches',
-                    data: monthlyData,
-                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                    borderColor: 'rgb(16, 185, 129)',
-                    borderWidth: 3,
-                    fill: true,
-                    tension: 0.4,
-                    pointBackgroundColor: 'rgb(16, 185, 129)',
-                    pointBorderColor: '#fff',
-                    pointBorderWidth: 2,
-                    pointRadius: 4,
-                    pointHoverRadius: 6
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
+            // Monthly Trends Chart
+            const monthlyCanvas = document.getElementById('monthlyChart');
+            if (monthlyCanvas && monthlyLabels.length > 0) {
+                new Chart(monthlyCanvas.getContext('2d'), {
+                    type: 'line',
+                    data: {
+                        labels: monthlyLabels,
+                        datasets: [{
+                            label: 'Monthly Searches',
+                            data: monthlyValues,
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            borderColor: 'rgb(16, 185, 129)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            pointBackgroundColor: 'rgb(16, 185, 129)',
+                            pointBorderColor: '#fff',
+                            pointBorderWidth: 2,
+                            pointRadius: 4
+                        }]
                     },
-                    tooltip: {
-                        backgroundColor: 'rgba(17, 24, 39, 0.95)',
-                        padding: 12,
-                        cornerRadius: 8,
-                        titleColor: '#fff',
-                        bodyColor: '#fff',
-                        borderColor: 'rgba(16, 185, 129, 0.5)',
-                        borderWidth: 1
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            stepSize: 10,
-                            color: textColor,
-                            font: {
-                                size: 11
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: 'rgba(17, 24, 39, 0.95)',
+                                titleColor: '#fff',
+                                bodyColor: '#fff'
                             }
                         },
-                        grid: {
-                            color: gridColor,
-                            drawBorder: false
-                        },
-                        border: {
-                            display: false
-                        }
-                    },
-                    x: {
-                        ticks: {
-                            color: textColor,
-                            font: {
-                                size: 10
-                            },
-                            maxRotation: 45,
-                            minRotation: 45
-                        },
-                        grid: {
-                            display: false
-                        },
-                        border: {
-                            display: false
+                        scales: {
+                            y: { beginAtZero: true, ticks: { color: textColor, stepSize: 10 }, grid: { color: gridColor } },
+                            x: { ticks: { color: textColor }, grid: { display: false } }
                         }
                     }
-                }
+                });
             }
-        });
+        } catch (e) {
+            console.error('Error initializing charts:', e);
+        }
     });
+</script>
 </script>
