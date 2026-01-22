@@ -171,7 +171,8 @@ function calculateMetrics(docs, startDate, endDate, allDocs = []) {
   }
 
   // Busiest Day
-  const busiestDay = Object.entries(dailyCounts).sort((a, b) => b[1] - a[1])[0];
+  const dailyEntries = Object.entries(dailyCounts);
+  const busiestDay = dailyEntries.length > 0 ? dailyEntries.sort((a, b) => b[1] - a[1])[0] : null;
   const busiestDayFormatted = busiestDay ? moment(busiestDay[0]).format('MMM DD, YYYY') : 'N/A';
   const busiestDayCount = busiestDay ? busiestDay[1] : 0;
 

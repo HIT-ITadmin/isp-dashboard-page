@@ -279,9 +279,11 @@
     </div>
 </div>
 
-<!-- Chart.js Script -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+    console.log('Analytics Chart Data:', {
+        chartLabels: <% - JSON.stringify(locals.chartLabels || []) %>,
+        chartValues: <% - JSON.stringify(locals.chartValues || []) %>
+    });
     document.addEventListener('DOMContentLoaded', function () {
         const isDarkMode = document.documentElement.classList.contains('dark');
         const gridColor = isDarkMode ? 'rgba(75, 85, 99, 0.2)' : 'rgba(229, 231, 235, 0.8)';
@@ -289,8 +291,8 @@
 
         // Daily Usage Chart
         const ctx = document.getElementById('usageChart').getContext('2d');
-        const labels = <%- JSON.stringify(chartLabels) %>;
-        const data = <%- JSON.stringify(chartValues) %>;
+        const labels = <% - JSON.stringify(chartLabels) %>;
+        const data = <% - JSON.stringify(chartValues) %>;
 
         new Chart(ctx, {
             type: 'bar',
@@ -365,8 +367,8 @@
 
         // Monthly Trends Chart
         const monthlyCtx = document.getElementById('monthlyChart').getContext('2d');
-        const monthlyLabels = <%- JSON.stringify(monthlyLabels) %>;
-        const monthlyData = <%- JSON.stringify(monthlyValues) %>;
+        const monthlyLabels = <% - JSON.stringify(monthlyLabels) %>;
+        const monthlyData = <% - JSON.stringify(monthlyValues) %>;
 
         new Chart(monthlyCtx, {
             type: 'line',
