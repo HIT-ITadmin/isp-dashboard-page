@@ -16,12 +16,12 @@
                     <!-- Tabs -->
                     <div class="mt-6 border-b border-gray-200 ">
                         <nav class="-mb-px flex space-x-8" aria-label="Tabs">
-                            <a href="/analytics"
+                            <a href="/"
                                 class="border-blue-500 text-blue-600  whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
                                 aria-current="page">
                                 General Usage
                             </a>
-                            <a href="/analytics/agents"
+                            <a href="/agents"
                                 class="border-transparent text-gray-500  hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
                                 By Agent
                             </a>
@@ -31,7 +31,7 @@
 
                 <!-- Filter Section -->
                 <div class="bg-white  rounded-xl shadow-sm border border-gray-200  p-4">
-                    <form action="/analytics" method="GET" class="flex flex-col sm:flex-row gap-3">
+                    <form action="/" method="GET" class="flex flex-col sm:flex-row gap-3">
 
                         <!-- Date Range -->
                         <div class="flex gap-2 items-end">
@@ -69,7 +69,7 @@
                                 </svg>
                                 Refresh
                             </button>
-                            <a href="/analytics/export?start_date=<%= startDate %>&end_date=<%= endDate %>"
+                            <a href="/export?start_date=<%= startDate %>&end_date=<%= endDate %>"
                                 class="inline-flex items-center justify-center px-4 py-2 rounded-lg border border-transparent bg-blue-600 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors">
                                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

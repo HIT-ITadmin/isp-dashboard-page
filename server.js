@@ -164,7 +164,7 @@ function calculateMetrics(docs, startDate, endDate, allDocs = []) {
 }
 
 // Routes
-app.get('/analytics', async (req, res) => {
+app.get('/', async (req, res) => {
   try {
     const startDate = req.query.start_date || moment().subtract(30, 'days').format('YYYY-MM-DD');
     const endDate = req.query.end_date || moment().format('YYYY-MM-DD');
@@ -184,7 +184,7 @@ app.get('/analytics', async (req, res) => {
   }
 });
 
-app.get('/analytics/agents', async (req, res) => {
+app.get('/agents', async (req, res) => {
   try {
     const startDate = req.query.start_date || moment().subtract(30, 'days').format('YYYY-MM-DD');
     const endDate = req.query.end_date || moment().format('YYYY-MM-DD');
@@ -233,7 +233,7 @@ app.get('/analytics/agents', async (req, res) => {
   }
 });
 
-app.get('/analytics/export', async (req, res) => {
+app.get('/export', async (req, res) => {
   try {
     const startDate = req.query.start_date || moment().subtract(30, 'days').format('YYYY-MM-DD');
     const endDate = req.query.end_date || moment().format('YYYY-MM-DD');
@@ -265,6 +265,10 @@ app.get('/analytics/export', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-});
+export default app;
+
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`Server running at http://localhost:${PORT}`);
+  });
+}
