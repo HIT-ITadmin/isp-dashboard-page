@@ -1,0 +1,561 @@
+<div class="min-h-screen bg-gray-50 ">
+    <div class="max-w-7xl mx-auto py-6 sm:py-8 px-4 sm:px-6 lg:px-8">
+
+        <!-- Header Section with better spacing -->
+        <div class="mb-8">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+                <!-- Title -->
+                <div>
+                    <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 ">
+                        Program Usage Analytics
+                    </h1>
+                    <p class="mt-2 text-base text-gray-600 ">
+                        Tracking usage metrics and digital navigator performance
+                    </p>
+
+                    <!-- Tabs -->
+                    <div class="mt-6 border-b border-gray-200 ">
+                        <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+                            <a href="/analytics"
+                                class="border-transparent text-gray-500  hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                                General Usage
+                            </a>
+                            <a href="/analytics/agents"
+                                class="border-blue-500 text-blue-600  whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
+                                aria-current="page">
+                                By Agent
+                            </a>
+                        </nav>
+                    </div>
+                </div>
+
+                <!-- Filter Section -->
+                <div class="bg-white  rounded-xl shadow-sm border border-gray-200  p-4">
+                    <form action="/analytics/agents" method="GET" class="flex flex-col sm:flex-row gap-3">
+                        <!-- Navigator Filter -->
+                        <div class="min-w-[200px]">
+                            <label for="navigator" class="block text-xs font-medium text-gray-700  mb-1">
+                                Digital Navigator
+                            </label>
+                            <select name="navigator" id="navigator"
+                                class="block w-full rounded-lg border-gray-300  shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm  ">
+                                <option value="">All Navigators</option>
+                                <% availableNavigators.forEach(nav=> { %>
+                                    <option value="<%= nav %>" <%=selectedNavigator==nav ? 'selected' : '' %>>
+                                        <%= nav %>
+                                    </option>
+                                    <% }) %>
+                            </select>
+                        </div>
+
+                        <!-- Date Range -->
+                        <div class="flex gap-2 items-end">
+                            <div>
+                                <label for="start_date" class="block text-xs font-medium text-gray-700  mb-1">
+                                    Start Date
+                                </label>
+                                <input type="date" name="start_date" id="start_date" value="<%= startDate %>"
+                                    class="block w-full rounded-lg border-gray-300  shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm  ">
+                            </div>
+                            <div>
+                                <label for="end_date" class="block text-xs font-medium text-gray-700  mb-1">
+                                    End Date
+                                </label>
+                                <input type="date" name="end_date" id="end_date" value="<%= endDate %>"
+                                    class="block w-full rounded-lg border-gray-300  shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm  ">
+                            </div>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="flex gap-2 items-end">
+                            <button type="submit"
+                                class="inline-flex items-center justify-center px-4 py-2 rounded-lg border border-transparent bg-blue-600 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                                </svg>
+                                Filter
+                            </button>
+                            <button type="button" onclick="window.location.reload()"
+                                class="inline-flex items-center justify-center px-4 py-2 rounded-lg border border-gray-300  bg-white  text-sm font-medium text-gray-700  shadow-sm hover:bg-gray-50  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                </svg>
+                                Refresh
+                            </button>
+                            <a href="/analytics/export?navigator=<%= selectedNavigator %>&start_date=<%= startDate %>&end_date=<%= endDate %>"
+                                class="inline-flex items-center justify-center px-4 py-2 rounded-lg border border-transparent bg-blue-600 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                Export
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- 🏆 Leaderboard Section -->
+        <div class="mb-8">
+            <div class="bg-white  rounded-xl shadow-sm border border-gray-200  overflow-hidden">
+                <div class="px-6 py-5 border-b border-gray-200 ">
+                    <h2 class="text-xl font-semibold text-gray-900  flex items-center">
+                        <span class="text-2xl mr-3">🏆</span>
+                        Digital Navigator Leaderboard
+                    </h2>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200 ">
+                        <thead class="bg-gray-50 ">
+                            <tr>
+                                <th scope="col"
+                                    class="px-6 py-4 text-left text-xs font-semibold text-gray-600  uppercase tracking-wider">
+                                    Rank
+                                </th>
+                                <th scope="col"
+                                    class="px-6 py-4 text-left text-xs font-semibold text-gray-600  uppercase tracking-wider">
+                                    Digital Navigator
+                                </th>
+                                <th scope="col"
+                                    class="px-6 py-4 text-left text-xs font-semibold text-gray-600  uppercase tracking-wider">
+                                    Total Searches
+                                </th>
+                                <th scope="col"
+                                    class="px-6 py-4 text-left text-xs font-semibold text-gray-600  uppercase tracking-wider">
+                                    Days Active
+                                </th>
+                                <th scope="col"
+                                    class="px-6 py-4 text-left text-xs font-semibold text-gray-600  uppercase tracking-wider">
+                                    Avg/Day
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white  divide-y divide-gray-200 ">
+                            <% let rank=1; if (navigatorStats.length> 0) {
+                                navigatorStats.forEach(stat => {
+                                %>
+                                <tr
+                                    class="hover:bg-gray-50  transition-colors <%= rank <= 3 ? 'bg-gradient-to-r from-transparent ' + (rank === 1 ? 'to-yellow-50' : (rank === 2 ? 'to-gray-50' : 'to-orange-50')) : '' %>">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <% if(rank===1) { %>
+                                                <span class="text-3xl">🥇</span>
+                                                <% } else if(rank===2) { %>
+                                                    <span class="text-3xl">🥈</span>
+                                                    <% } else if(rank===3) { %>
+                                                        <span class="text-3xl">🥉</span>
+                                                        <% } else { %>
+                                                            <span
+                                                                class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-100  text-sm font-semibold text-gray-600 ">
+                                                                <%= rank %>
+                                                            </span>
+                                                            <% } %>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-semibold text-gray-900 ">
+                                            <%= stat.navigator %>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-bold text-gray-900 ">
+                                            <%= Number(stat.searches).toLocaleString() %>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-600 ">
+                                            <%= stat.days_active %> days
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100  text-blue-800 ">
+                                            <%= stat.avg_per_day %>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <% rank++; %>
+                                    <% }); } else { %>
+                                        <tr>
+                                            <td colspan="5" class="px-6 py-12 text-center">
+                                                <div class="flex flex-col items-center justify-center text-gray-500 ">
+                                                    <svg class="w-12 h-12 mb-4 text-gray-400" fill="none"
+                                                        stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                                                    </svg>
+                                                    <p class="text-sm font-medium">No data available for the selected
+                                                        period</p>
+                                                    <p class="text-xs mt-1">Try adjusting your date range or filters</p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Metrics Cards Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+            <!-- Total Searches -->
+            <div
+                class="bg-white  rounded-xl shadow-sm border border-gray-200  overflow-hidden hover:shadow-md transition-shadow">
+                <div class="p-6">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <div class="flex items-center justify-center w-12 h-12 rounded-lg bg-blue-100 ">
+                                <svg class="w-6 h-6 text-blue-600 " fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="ml-4 flex-1">
+                            <dt class="text-sm font-medium text-gray-500 ">
+                                Total Searches
+                            </dt>
+                            <dd class="mt-1 text-2xl font-bold text-gray-900 ">
+                                <%= Number(totalUsage).toLocaleString() %>
+                            </dd>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-blue-50  px-6 py-2">
+                    <div class="text-xs text-blue-700  font-medium">
+                        <%= startDate %> - <%= endDate %>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Navigators -->
+            <div
+                class="bg-white  rounded-xl shadow-sm border border-gray-200  overflow-hidden hover:shadow-md transition-shadow">
+                <div class="p-6">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <div class="flex items-center justify-center w-12 h-12 rounded-lg bg-green-100 ">
+                                <svg class="w-6 h-6 text-green-600 " fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="ml-4 flex-1">
+                            <dt class="text-sm font-medium text-gray-500 ">
+                                Active Navigators
+                            </dt>
+                            <dd class="mt-1 text-2xl font-bold text-gray-900 ">
+                                <%= uniqueNavigators %>
+                            </dd>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-green-50  px-6 py-2">
+                    <div class="text-xs text-green-700  font-medium">
+                        In selected period
+                    </div>
+                </div>
+            </div>
+
+            <!-- Avg per Navigator -->
+            <div
+                class="bg-white  rounded-xl shadow-sm border border-gray-200  overflow-hidden hover:shadow-md transition-shadow">
+                <div class="p-6">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <div class="flex items-center justify-center w-12 h-12 rounded-lg bg-yellow-100 ">
+                                <svg class="w-6 h-6 text-yellow-600 " fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="ml-4 flex-1">
+                            <dt class="text-sm font-medium text-gray-500 ">
+                                Avg per Navigator
+                            </dt>
+                            <dd class="mt-1 text-2xl font-bold text-gray-900 ">
+                                <%= avgSearchesPerNavigator %>
+                            </dd>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-yellow-50  px-6 py-2">
+                    <div class="text-xs text-yellow-700  font-medium">
+                        Searches per person
+                    </div>
+                </div>
+            </div>
+
+            <!-- Growth Rate -->
+            <div
+                class="bg-white  rounded-xl shadow-sm border border-gray-200  overflow-hidden hover:shadow-md transition-shadow">
+                <div class="p-6">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <div
+                                class="flex items-center justify-center w-12 h-12 rounded-lg <%= growthRate >= 0 ? 'bg-green-100' : 'bg-red-100' %>">
+                                <% if(growthRate>= 0) { %>
+                                    <svg class="w-6 h-6 text-green-600 " fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                                    </svg>
+                                    <% } else { %>
+                                        <svg class="w-6 h-6 text-red-600 " fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
+                                        </svg>
+                                        <% } %>
+                            </div>
+                        </div>
+                        <div class="ml-4 flex-1">
+                            <dt class="text-sm font-medium text-gray-500 ">
+                                Growth Rate
+                            </dt>
+                            <dd
+                                class="mt-1 text-2xl font-bold <%= growthRate >= 0 ? 'text-green-600' : 'text-red-600' %>">
+                                <%= growthRate> 0 ? '+' : '' %><%= growthRate %>%
+                            </dd>
+                        </div>
+                    </div>
+                </div>
+                <div class="<%= growthRate >= 0 ? 'bg-green-50' : 'bg-red-50' %> px-6 py-2">
+                    <div class="text-xs <%= growthRate >= 0 ? 'text-green-700' : 'text-red-700' %> font-medium">
+                        vs previous period
+                    </div>
+                </div>
+            </div>
+
+            <!-- Busiest Day -->
+            <div
+                class="bg-white  rounded-xl shadow-sm border border-gray-200  overflow-hidden hover:shadow-md transition-shadow">
+                <div class="p-6">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <div class="flex items-center justify-center w-12 h-12 rounded-lg bg-purple-100 ">
+                                <svg class="w-6 h-6 text-purple-600 " fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="ml-4 flex-1">
+                            <dt class="text-sm font-medium text-gray-500 ">
+                                Busiest Day
+                            </dt>
+                            <dd class="mt-1 text-lg font-bold text-gray-900  truncate">
+                                <%= locals.busiestDayFormatted || 'N/A' %>
+                            </dd>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-purple-50  px-6 py-2">
+                    <div class="text-xs text-purple-700  font-medium">
+                        <%= locals.busiestDayCount || 0 %> searches
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <!-- Daily Usage Chart -->
+            <div class="bg-white  rounded-xl shadow-sm border border-gray-200  p-6">
+                <h3 class="text-lg font-semibold text-gray-900  mb-4">
+                    Daily Usage Trend
+                </h3>
+                <div class="relative h-72">
+                    <canvas id="usageChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Monthly Chart -->
+            <div class="bg-white  rounded-xl shadow-sm border border-gray-200  p-6">
+                <h3 class="text-lg font-semibold text-gray-900  mb-4">
+                    Monthly Trends (Last 12 Months)
+                </h3>
+                <div class="relative h-72">
+                    <canvas id="monthlyChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Chart.js Script -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const isDarkMode = document.documentElement.classList.contains('dark');
+        const gridColor = isDarkMode ? 'rgba(75, 85, 99, 0.2)' : 'rgba(229, 231, 235, 0.8)';
+        const textColor = isDarkMode ? 'rgba(156, 163, 175, 1)' : 'rgba(107, 114, 128, 1)';
+
+        // Daily Usage Chart
+        const ctx = document.getElementById('usageChart').getContext('2d');
+        const labels = <%- JSON.stringify(chartLabels) %>;
+        const data = <%- JSON.stringify(chartValues) %>;
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Daily Searches',
+                    data: data,
+                    backgroundColor: 'rgba(59, 130, 246, 0.8)',
+                    borderColor: 'rgb(59, 130, 246)',
+                    borderWidth: 0,
+                    borderRadius: 6,
+                    barPercentage: 0.7
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        backgroundColor: 'rgba(17, 24, 39, 0.95)',
+                        padding: 12,
+                        cornerRadius: 8,
+                        titleColor: '#fff',
+                        bodyColor: '#fff',
+                        borderColor: 'rgba(59, 130, 246, 0.5)',
+                        borderWidth: 1
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1,
+                            color: textColor,
+                            font: {
+                                size: 11
+                            }
+                        },
+                        grid: {
+                            color: gridColor,
+                            drawBorder: false
+                        },
+                        border: {
+                            display: false
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: textColor,
+                            font: {
+                                size: 10
+                            },
+                            maxRotation: 45,
+                            minRotation: 45
+                        },
+                        grid: {
+                            display: false
+                        },
+                        border: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // Monthly Trends Chart
+        const monthlyCtx = document.getElementById('monthlyChart').getContext('2d');
+        const monthlyLabels = <%- JSON.stringify(monthlyLabels) %>;
+        const monthlyData = <%- JSON.stringify(monthlyValues) %>;
+
+        new Chart(monthlyCtx, {
+            type: 'line',
+            data: {
+                labels: monthlyLabels,
+                datasets: [{
+                    label: 'Monthly Searches',
+                    data: monthlyData,
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    borderColor: 'rgb(16, 185, 129)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: 'rgb(16, 185, 129)',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(17, 24, 39, 0.95)',
+                        padding: 12,
+                        cornerRadius: 8,
+                        titleColor: '#fff',
+                        bodyColor: '#fff',
+                        borderColor: 'rgba(16, 185, 129, 0.5)',
+                        borderWidth: 1
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 10,
+                            color: textColor,
+                            font: {
+                                size: 11
+                            }
+                        },
+                        grid: {
+                            color: gridColor,
+                            drawBorder: false
+                        },
+                        border: {
+                            display: false
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: textColor,
+                            font: {
+                                size: 10
+                            },
+                            maxRotation: 45,
+                            minRotation: 45
+                        },
+                        grid: {
+                            display: false
+                        },
+                        border: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>

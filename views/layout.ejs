@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ISP Dashboard - Analytics</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Figtree', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+
+    <style>
+        /* Ajuste visual de DataTables al modo Tailwind */
+        table.dataTable thead {
+            background-color: #f3f4f6 !important;
+            /* Gray 100 */
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            background-color: #16a34a !important;
+            /* verde */
+            color: white !important;
+            border-radius: 4px;
+        }
+
+        /* Forced Light Mode Styles */
+        body {
+            background-color: #f9fafb !important;
+            /* Gray 50 */
+            color: #111827 !important;
+            /* Gray 900 */
+        }
+    </style>
+</head>
+
+<body class="font-sans antialiased">
+    <div class="min-h-screen">
+        <%- body %>
+    </div>
+</body>
+
+</html>
