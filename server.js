@@ -359,7 +359,7 @@ app.get('/impact', async (req, res) => {
 
     const totalSearches = filteredDocs.length;
     const totalWithTickets = addressesWithTickets.filter(a => a.hasTicket).length;
-    const totalWithoutTickets = addressesWithTickets.filter(a => !a.hasTicket && !a.zendeskError).length;
+    const totalWithoutTickets = addressesWithTickets.filter(a => !a.hasInternet).length;
     const totalWithInternet = addressesWithTickets.filter(a => a.hasInternet).length;
     const conversionRate = addresses.length > 0
       ? ((totalWithInternet / addresses.length) * 100).toFixed(1)
@@ -372,7 +372,7 @@ app.get('/impact', async (req, res) => {
     } else if (ticketFilter === 'with_ticket') {
       filteredAddresses = addressesWithTickets.filter(a => a.hasTicket);
     } else if (ticketFilter === 'no_ticket') {
-      filteredAddresses = addressesWithTickets.filter(a => !a.hasTicket);
+      filteredAddresses = addressesWithTickets.filter(a => !a.hasInternet);
     } else {
       filteredAddresses = addressesWithTickets;
     }

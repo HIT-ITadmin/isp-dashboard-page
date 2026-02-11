@@ -144,26 +144,26 @@
                 </div>
             </div>
 
-            <!-- With Zendesk Tickets -->
+            <!-- Sales -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
                 <div class="p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
-                            <div class="flex items-center justify-center w-12 h-12 rounded-lg bg-green-100">
-                                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div class="flex items-center justify-center w-12 h-12 rounded-lg bg-emerald-100">
+                                <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                             </div>
                         </div>
                         <div class="ml-4 flex-1">
-                            <dt class="text-sm font-medium text-gray-500">With Tickets</dt>
-                            <dd class="mt-1 text-2xl font-bold text-green-600"><%= totalWithTickets %></dd>
+                            <dt class="text-sm font-medium text-gray-500">Sales</dt>
+                            <dd class="mt-1 text-2xl font-bold text-emerald-600"><%= totalWithInternet %></dd>
                         </div>
                     </div>
                 </div>
-                <div class="bg-green-50 px-6 py-2">
-                    <div class="text-xs text-green-700 font-medium">Addresses matched to Zendesk tickets</div>
+                <div class="bg-emerald-50 px-6 py-2">
+                    <div class="text-xs text-emerald-700 font-medium">Successful resolutions from searches</div>
                 </div>
             </div>
 
@@ -211,11 +211,7 @@
                     <div class="flex rounded-lg border border-gray-200 overflow-hidden">
                         <a href="/impact?start_date=<%= startDate %>&end_date=<%= endDate %>&ticket_filter=internet"
                             class="px-4 py-2 text-sm font-medium <%= ticketFilter === 'internet' ? 'bg-emerald-600 text-white' : 'bg-white text-gray-700 hover:bg-gray-50' %> border-r border-gray-200 transition-colors">
-                            Internet (<%= totalWithInternet %>)
-                        </a>
-                        <a href="/impact?start_date=<%= startDate %>&end_date=<%= endDate %>&ticket_filter=with_ticket"
-                            class="px-4 py-2 text-sm font-medium <%= ticketFilter === 'with_ticket' ? 'bg-green-600 text-white' : 'bg-white text-gray-700 hover:bg-gray-50' %> border-r border-gray-200 transition-colors">
-                            With Ticket (<%= totalWithTickets %>)
+                            Sales (<%= totalWithInternet %>)
                         </a>
                         <a href="/impact?start_date=<%= startDate %>&end_date=<%= endDate %>&ticket_filter=no_ticket"
                             class="px-4 py-2 text-sm font-medium <%= ticketFilter === 'no_ticket' ? 'bg-orange-600 text-white' : 'bg-white text-gray-700 hover:bg-gray-50' %> border-r border-gray-200 transition-colors">
