@@ -27,42 +27,15 @@ app.use(express.static(path.join(process.cwd(), 'public')));
 // Initialize Firebase
 const serviceAccount = {
   type: "service_account",
-  project_id: "isp-dashboard-7cb6e",
-  private_key_id: "b401e3cd920ba58d57a3d2b9a33cf4f3f8502c2d",
-  private_key: `-----BEGIN PRIVATE KEY-----
-MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCySSxgoAaHQg05
-nPtEzm7+smdZBFPOArQKotRKbfXnPoHimRAwuj+swj9kIy11x5p7n0som3+XCycW
-sMrFS4iXoeO7heUZ6LbmIbM2nNJPHUGSdJ5QL6UIfxvi+hVbWdlh72J8G2axlFse
-vZqqlI90bGRfDg9TZFJ3qvdqT6Y8zTpFsrAFun0coOV8KNAeSzNhjNWXlGdb3T1a
-reL26U7OiDAO/PNglL1HxKN/TvNDGHg7mkWQxDTpSvIYO1TbmoxaNMlDByhjn9W7
-a5dhznJ9m4NzkN7IqxhjMnBnGXpbS8ZLW+ozfR+y0FGFwBsyYTm2znKdTwc/4vjJ
-sMChHNRtAgMBAAECggEAA+olZk29NvUVU0GGJuGdgEwshsDYkjpu95jRrnyxnI07
-ztzrhRZh1YpCWBGJqv9h/frmbJLVf1yIVDA3k5NwAVxVosVy3VnFwlHVHIre90u+
-J9gVrc8OAZzA4P/6vhG/+y2FbRIw9A883PTu03YFnFnQ7mFhpsQaJ3SCkDwFe2pA
-zYueUYvwn38Uw5uz0vVVqoDAcJOuemLaY3ltAZetlJBmD5qXG5CnW0MKXmSj8FgF
-bNd5y5qP8ZIhCl6BcKEDIrvreg+M/W9MLhYCpAI623Qg3e0299u11pQHQ5BSHMMP
-rmwxurfYcQlT6LHbPaa4jylw6P7+g1ZBy8oqPi/F4QKBgQDb4mET5x5YTL5cjci6
-iZjZJhICmuGAbPeE7SARV9rhb3JG7jC3sidQMxDZiUmHIDZN37+fwbC8QhRD4oLG
-i72lyr5yVWUdnTlmbdk/xC5RpYhb/uoTMCSErNFmFWmn8pK5F9e1SbNA2f7KFKeO
-XK3KgPmVFDhfXxlXLj8l3C41RQKBgQDPka0TSLoAQ8BU3ICQNxelKF652DUdtvo4
-GlRFboujlpgzfYviWOY8LErkka7nPy1H6jFZpymckMj8Cr/iQef47esBXHXp3adv
-8kY/xgg5c2Kedjz2dQCr2wzryulXduyQaAT67thuFBnER6/HGJk+14szj92jBA2Q
-4Exq2evxCQKBgF+kFgmsK7zIlLx5R2gr1XoOXyMW7yMHQppk8d/ZUPFhollL3ZDp
-QsRVkeytFHhcAILa4eTBQPiB3YKxkaR+v9zPVQsyLas16fOtsCNWV7dXwvoQ5Qu3
-kwrKiMJYaf6NOlicEE1gY0HAEF0hosf/c/BzLRw1EVgaa1FKYlk7bjXpAoGAOCXv
-64eAyRGKtWnwXRKKEuMYvKz/sUoN5Z85rI56t4XFJiiP7mqd3SkeGTZPWb59QTbY
-oqfVWcTQmV1PCqVJWs0BBR09yEVtRZsD5bxr/R55TuQtGX4M8HAQzrfU5xQEagu5
-TSfO4/gMAExkADdnPNiRjyEbkz1Fbis+gKjyagECgYEAjCyS0u9x8VHegEx4kLp/
-ePkNnbRto9XFUqn/p37FfR5lWPIEPE8qiA6XKR72xqiu9G4mINlOkTDH6gEwKJHl
-wbpvpSySod8vIKbH3QO/ihnRzs82SxyykxpVqCDv+IJnEUleKGfoL9df7Lapnt0y
-mqMgZq1dD5Q0nZiCEtlner0=
------END PRIVATE KEY-----`,
-  client_email: "firebase-adminsdk-fbsvc@isp-dashboard-7cb6e.iam.gserviceaccount.com",
-  client_id: "101642885522234108344",
+  project_id: process.env.FIREBASE_PROJECT_ID,
+  private_key_id: process.env.FIREBASE_PRIVATE_KEY_ID,
+  private_key: (process.env.FIREBASE_PRIVATE_KEY || '').replace(/\\n/g, '\n'),
+  client_email: process.env.FIREBASE_CLIENT_EMAIL,
+  client_id: process.env.FIREBASE_CLIENT_ID,
   auth_uri: "https://accounts.google.com/o/oauth2/auth",
   token_uri: "https://oauth2.googleapis.com/token",
   auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
-  client_x509_cert_url: "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40isp-dashboard-7cb6e.iam.gserviceaccount.com",
+  client_x509_cert_url: process.env.FIREBASE_CLIENT_X509_CERT_URL,
   universe_domain: "googleapis.com"
 };
 
@@ -191,6 +164,72 @@ function calculateMetrics(docs, startDate, endDate, allDocs = []) {
   };
 }
 
+/**
+ * Search Zendesk tickets by address
+ */
+async function searchZendeskTickets(address) {
+  const subdomain = process.env.ZENDESK_SUBDOMAIN;
+  const email = process.env.ZENDESK_EMAIL;
+  const token = process.env.ZENDESK_API_TOKEN;
+
+  if (!subdomain || !email || !token) {
+    return { error: 'Zendesk credentials not configured', tickets: [] };
+  }
+
+  try {
+    const query = encodeURIComponent(address);
+    const url = `https://${subdomain}.zendesk.com/api/v2/search.json?query=${query}&sort_by=created_at&sort_order=desc`;
+    const auth = Buffer.from(`${email}/token:${token}`).toString('base64');
+
+    const response = await fetch(url, {
+      headers: {
+        'Authorization': `Basic ${auth}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      const errText = await response.text();
+      console.error(`Zendesk API error (${response.status}):`, errText);
+      return { error: `Zendesk API error: ${response.status}`, tickets: [] };
+    }
+
+    const data = await response.json();
+    const DN_RESOLUTION_FIELD_ID = 26119285959579;
+    const SUCCESSFUL_RESOLUTIONS = [
+      'signed_up_for_internet',
+      'purchased_low_cost_devices',
+      'enrolled_to_digital_skills_training',
+      'signed_up_for_internet_and_dl',
+      'signed_up_for_internet_and_lcc',
+      'enroll_to_dl_and_purchased_lcc',
+      'purchased_lcc__signed_up_for_internet_and_dl'
+    ];
+
+    const tickets = (data.results || [])
+      .filter(r => r.result_type === 'ticket')
+      .map(t => {
+        const dnField = (t.custom_fields || []).find(f => f.id === DN_RESOLUTION_FIELD_ID);
+        const dnResolution = dnField ? dnField.value : null;
+        return {
+          id: t.id,
+          subject: t.subject || 'No subject',
+          status: t.status,
+          created_at: t.created_at,
+          updated_at: t.updated_at,
+          description: (t.description || '').substring(0, 200),
+          dnResolution,
+          hasSuccessfulResolution: SUCCESSFUL_RESOLUTIONS.includes(dnResolution)
+        };
+      });
+
+    return { error: null, tickets };
+  } catch (err) {
+    console.error('Zendesk search error:', err.message);
+    return { error: err.message, tickets: [] };
+  }
+}
+
 // Routes
 app.get('/', async (req, res) => {
   try {
@@ -258,6 +297,114 @@ app.get('/agents', async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).send('Error fetching agent analytics');
+  }
+});
+
+app.get('/impact', async (req, res) => {
+  try {
+    const startDate = req.query.start_date || moment().subtract(30, 'days').format('YYYY-MM-DD');
+    const endDate = req.query.end_date || moment().format('YYYY-MM-DD');
+    const ticketFilter = req.query.ticket_filter || 'internet';
+    const page = Math.max(1, parseInt(req.query.page) || 1);
+    const perPage = 25;
+
+    const allDocs = await fetchSearches();
+    const filteredDocs = filterDocuments(allDocs, startDate, endDate);
+
+    // Get unique addresses from the searches
+    const addressMap = {};
+    filteredDocs.forEach(doc => {
+      const addr = doc.address || 'No address';
+      if (!addressMap[addr]) {
+        addressMap[addr] = {
+          address: addr,
+          searchCount: 0,
+          lastSearched: null
+        };
+      }
+      addressMap[addr].searchCount++;
+      const ts = doc.timestamp ? moment(doc.timestamp) : null;
+      if (ts && (!addressMap[addr].lastSearched || ts.isAfter(addressMap[addr].lastSearched))) {
+        addressMap[addr].lastSearched = ts;
+      }
+    });
+
+    const addresses = Object.values(addressMap).map(a => ({
+      ...a,
+      lastSearched: a.lastSearched ? a.lastSearched.format('MMM DD, YYYY') : 'N/A'
+    })).sort((a, b) => b.searchCount - a.searchCount);
+
+    // Search Zendesk for ALL addresses in batches of 50
+    const addressesWithTickets = [];
+    const batchSize = 50;
+
+    for (let i = 0; i < addresses.length; i += batchSize) {
+      const batch = addresses.slice(i, i + batchSize);
+      const batchResults = await Promise.all(
+        batch.map(async (addr) => {
+          const result = await searchZendeskTickets(addr.address);
+          const hasInternet = result.tickets.some(t => t.hasSuccessfulResolution);
+          return {
+            ...addr,
+            tickets: result.tickets,
+            ticketCount: result.tickets.length,
+            zendeskError: result.error,
+            hasTicket: result.tickets.length > 0,
+            hasInternet
+          };
+        })
+      );
+      addressesWithTickets.push(...batchResults);
+    }
+
+    const totalSearches = filteredDocs.length;
+    const totalWithTickets = addressesWithTickets.filter(a => a.hasTicket).length;
+    const totalWithoutTickets = addressesWithTickets.filter(a => !a.hasTicket && !a.zendeskError).length;
+    const totalWithInternet = addressesWithTickets.filter(a => a.hasInternet).length;
+    const conversionRate = addresses.length > 0
+      ? ((totalWithInternet / addresses.length) * 100).toFixed(1)
+      : 0;
+
+    // Apply ticket filter
+    let filteredAddresses;
+    if (ticketFilter === 'internet') {
+      filteredAddresses = addressesWithTickets.filter(a => a.hasInternet);
+    } else if (ticketFilter === 'with_ticket') {
+      filteredAddresses = addressesWithTickets.filter(a => a.hasTicket);
+    } else if (ticketFilter === 'no_ticket') {
+      filteredAddresses = addressesWithTickets.filter(a => !a.hasTicket);
+    } else {
+      filteredAddresses = addressesWithTickets;
+    }
+
+    // Pagination
+    const totalFiltered = filteredAddresses.length;
+    const totalPages = Math.max(1, Math.ceil(totalFiltered / perPage));
+    const currentPage = Math.min(page, totalPages);
+    const paginatedAddresses = filteredAddresses.slice((currentPage - 1) * perPage, currentPage * perPage);
+
+    const zendeskConfigured = !!(process.env.ZENDESK_SUBDOMAIN && process.env.ZENDESK_EMAIL && process.env.ZENDESK_API_TOKEN);
+
+    res.render('impact', {
+      addresses: paginatedAddresses,
+      startDate,
+      endDate,
+      totalSearches,
+      uniqueAddresses: addresses.length,
+      totalWithTickets,
+      totalWithoutTickets,
+      totalWithInternet,
+      conversionRate,
+      zendeskConfigured,
+      ticketFilter,
+      currentPage,
+      totalPages,
+      totalFiltered,
+      perPage
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(`Error fetching impact data: ${error.message}`);
   }
 });
 
